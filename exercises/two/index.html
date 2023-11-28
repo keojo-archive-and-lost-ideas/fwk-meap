@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .done {
+        text-decoration: line-through;
+      }
+    </style>
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        const todosState = [];
+
+        function createReadTodo(content) {
+          const readTodo = document.createElement("li");
+          const span = document.createElement("span");
+          span.textContent = content || "Read a book";
+          span.addEventListener("click", () => {
+            const editTodo = createEditTodo(content);
+            readTodo.replaceWith(editTodo);
+          });
+          const doneButton = document.createElement("button");
+          doneButton.textContent = "Done";
+          doneButton.addEventListener("click", () => {
+            readTodo.classList.toggle("done");
+          });
+
+          readTodo.appendChild(span);
+          readTodo.appendChild(doneButton);
+
+          return readTodo;
+        }
+
+        function createEditTodo(content) {
+          const wrapper = document.createElement("div");
+          const editTodo = document.createElement("input");
+          editTodo.type = "text";
+          editTodo.value = content || "Read a book";
+          const saveButton = document.createElement("button");
+          saveButton.textContent = "Save";
+          saveButton.addEventListener("click", () => {
+            const readTodo = createReadTodo(editTodo.value);
+            wrapper.replaceWith(readTodo);
+          });
+          editTodo.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+              const readTodo = createReadTodo(editTodo.value);
+              wrapper.replaceWith(readTodo);
+            }
+          });
+          wrapper.appendChild(editTodo);
+          wrapper.appendChild(saveButton);
+          return wrapper;
+        }
+
+        const listWrapper = document.querySelector("#todo-list");
+        console.log(listWrapper);
+        const list = listWrapper.querySelector("ul");
+        for (const todo of todosState) {
+          const readTodo = createReadTodo();
+          list.appendChild(readTodo);
+        }
+
+        const addButton = document.querySelector("button");
+        const input = document.querySelector("input");
+
+        function addTodo() {
+          if (!input.value) return;
+          const value = input.value;
+          const readTodo = createReadTodo(value);
+          list.appendChild(readTodo);
+          input.value = "";
+        }
+
+        addButton.addEventListener("click", () => addTodo());
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            addTodo();
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>My todo</h1>
+    <label>
+      New todo:
+      <input type="text" />
+      <button>Add</button>
+    </label>
+    <div id="todo-list">
+      <ul></ul>
+    </div>
+  </body>
+</html>
