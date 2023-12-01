@@ -2,7 +2,7 @@ export interface DOMAttributes {
   class?: string;
   classNames?: string[];
   style?: string;
-  [key: string]: string | string[] | undefined;
+  [key: string]: any
 }
 
 export const DOM_TYPES = {
@@ -38,7 +38,6 @@ export interface VirtualElementNode extends Node {
   tag: string | object;
   props: DOMAttributes | null;
   children: VirtualNode[];
-  element?: HTMLElement | null;
   listeners?: { [key: string]: (event: Event) => void };
 }
 

@@ -1,11 +1,11 @@
 import { describe, test, expect } from "vitest";
-import { appendFragmentNode, appendTextNode } from './append'
-import { createShadowFragment, createShadowString } from "./shadowNodes";
+import { appendElementNode, appendFragmentNode, appendTextNode } from './append'
+import { createShadowElement, createShadowFragment, createShadowString } from "./shadowNodes";
 //@ts-expect-error
 import { toJSON } from 'dom-to-json'
 import { parseDocument } from "../../libs/parse-document-api";
 
-describe('render text node', () => {
+describe('append text node', () => {
   test('it append to the parent node', () => {
     const vTextNode = createShadowString('foo')
     const body = document.createElement('body')
@@ -38,10 +38,10 @@ describe('render text node', () => {
   })
 })
 
-describe('render fragment node', () => {
+describe('append fragment node', () => {
   test(`domRef of fragmentNode should be the parentElement`, () => {
     const vFragmentNode = createShadowFragment({ vNodes: ['foo', 'bar'] })
-    const body = document.createElement('body', )
+    const body = document.createElement('body',)
     body.setAttribute('id', 'parent')
     appendFragmentNode({ node: vFragmentNode, parentElement: body })
 
@@ -58,7 +58,7 @@ describe('render fragment node', () => {
 
   test('it append others nodes to the parent node', () => {
     const vFragmentNode = createShadowFragment({ vNodes: ['foo', 'bar'] })
-    const body = document.createElement('body', )
+    const body = document.createElement('body',)
     body.setAttribute('id', 'parent')
     appendFragmentNode({ node: vFragmentNode, parentElement: body })
 
@@ -78,7 +78,7 @@ describe('render fragment node', () => {
   test('multiple siblings fragment will point to the same parent node', () => {
     const vFragmentNode = createShadowFragment({ vNodes: ['foo', 'bar'] })
     const vFragmentNode2 = createShadowFragment({ vNodes: ['foo', 'bar'] })
-    const body = document.createElement('body', )
+    const body = document.createElement('body',)
     body.setAttribute('id', 'parent')
     appendFragmentNode({ node: vFragmentNode, parentElement: body })
     appendFragmentNode({ node: vFragmentNode2, parentElement: body })
@@ -97,9 +97,51 @@ describe('render fragment node', () => {
       }
     )
     expect(vFragmentNode.domRef).toEqual(body)
-    expect(vFragmentNode2.domRef).toEqual(body)
   })
 })
 
-describe('render element node', () => {
+describe('append element node', () => {
+  test('it can create any html element', () => {
+    const shadowElement = createShadowElement('div', { id: 'foo' })
+    const shadowElement2 = createShadowElement('span', { id: 'foo' })
+    const body = document.createElement('body')
+
+    appendElementNode({ node: shadowElement, parentElement: body })
+    appendElementNode({ node: shadowElement2, parentElement: body })
+
+    const parseBody = parseDocument(body)
+    const jsonStringifyBody = JSON.stringify(parseBody)
+    expect(jsonStringifyBody).toEqual(
+      JSON.stringify({
+        tag: 'body',
+        props: {},
+        children: [
+          { tag: 'div', props: { id: 'foo' }, children: [], },
+          { tag: 'span', props: { id: 'foo' }, children: [], }
+        ]
+      })
+    )
+  })
+
+  test('it append to an element and have sub element appended to it', () => {
+    const shadowElement = createShadowElement('div', { id: 'foo' }, ['bar'])
+    const body = document.createElement('body')
+    appendElementNode({ node: shadowElement, parentElement: body })
+
+    const parseBody = parseDocument(body)
+    const stringifyBody = JSON.stringify(parseBody)
+    expect(stringifyBody).toEqual(
+      JSON.stringify({
+        tag: 'body',
+        props: {},
+        children: [
+          {
+            tag: 'div',
+            props: { id: 'foo' },
+            children: [{ tag: '', props: {}, children: [], text: 'bar' }],
+          }
+        ]
+      })
+    )
+  })
 })

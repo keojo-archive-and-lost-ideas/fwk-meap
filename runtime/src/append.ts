@@ -1,3 +1,5 @@
+import { setAttributes } from "./attributes";
+import { addEventListeners } from "./events";
 import { mountDOM } from "./mount-dom";
 import { DOMAttributes, VirtualElementNode, VirtualFragmentNode, VirtualTextNode } from "./types";
 
@@ -24,10 +26,9 @@ export function appendElementNode({ node, parentElement }: { node: VirtualElemen
 
   const element = document.createElement(tag as string);
   addPropsToElement({ element, props, vNode: node })
-  node.element = element;
-  node.domRef = parentElement;
+  node.domRef = element;
 
-  childrenVirtualDOMS.forEach((virtualDOM) => mountDOM({ vdom: virtualDOM, parentElement: parentElement }))
+  childrenVirtualDOMS.forEach((virtualDOM) => mountDOM({ vdom: virtualDOM, parentElement: element }))
   parentElement.appendChild(element)
 }
 
@@ -35,7 +36,6 @@ function addPropsToElement({ element, props, vNode }: { element: HTMLElement, pr
   if (props === null) return;
   const { on: events, ...attributes } = props
 
-  vNode.listeners = addEventListeners({ events, documentNode: element })
-  setAttributes({ documentNode: element, attributes })
+  vNode.listeners = addEventListeners({ listeners: events, element })
+  setAttributes(element, attributes)
 }
-
