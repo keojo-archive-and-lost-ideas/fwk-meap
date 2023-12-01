@@ -2,5 +2,15 @@
   "name": "typescript",
   "version": "0.0.0",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "dom-to-json": "^0.0.4",
+    "happy-dom": "^12.10.3",
+    "html-to-react": "^1.7.0",
+    "http-server": "^14.1.1",
+    "vitest": "^0.34.6"
+  },
+  "scripts": {
+    "serve": "http-server",
+    "test": "vitest"
+  }
 }
