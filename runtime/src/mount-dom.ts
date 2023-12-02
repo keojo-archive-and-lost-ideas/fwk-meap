@@ -2,7 +2,7 @@ import { appendElementNode, appendFragmentNode, appendTextNode } from "./append"
 import { createShadowFragment, createShadowString } from "./shadowNodes";
 import { Vdom } from "./types";
 
-export function mountDOM({vdom, parentElement}:{vdom: Vdom, parentElement: HTMLElement}) {
+export function mountDOM({vdom, parentElement}:{vdom: Vdom, parentElement: HTMLElement | null}) {
   if (vdom === null) return;
   if(typeof vdom === 'string') {
     createShadowString(vdom);
