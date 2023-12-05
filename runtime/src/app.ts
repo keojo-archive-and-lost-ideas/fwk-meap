@@ -5,8 +5,10 @@ import { VirtualNode } from './types'
 
 
 export function createApp({ state, view, reducers = {} }: { state: any, view: any, reducers?: any }) {
+  console.log('createApp')
   let parentElement: HTMLElement | null = null
   let vdom: VirtualNode = null
+  let isMounted = false
 
   const dispatcher = new Dispatcher()
   const subscriptions = [dispatcher.afterEveryCommand(renderApp)]
@@ -25,24 +27,34 @@ export function createApp({ state, view, reducers = {} }: { state: any, view: an
   }
 
   function renderApp() {
-    if (vdom) {
-      destroyDOM({ vdom })
-    }
-
-    vdom = view(state)
-    mountDOM({ vdom, parentElement })
+    const newDOM = view(state, emit)
+    vdom = patchDOM({oldDOM: vdom, newDOM, parentElement})
   }
 
   return {
     mount(_parentElement: HTMLElement) {
+      if (isMounted) {
+        throw new Error('App is already mounted')
+      }
       parentElement = _parentElement
-      renderApp()
+      vdom = view(state, emit)
+      mountDOM({ vdom, parentElement })
+
+      isMounted = true
     },
 
     unmount() {
       destroyDOM({ vdom })
       vdom = null
       subscriptions.forEach((unsubscribe) => unsubscribe())
+      isMounted = false
+    },
+
+    emit(eventName, payload) {
+      emit(eventName, payload)
     },
   }
+
 }
+
+export default createApp

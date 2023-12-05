@@ -11,6 +11,13 @@ export const DOM_TYPES = {
   FRAGMENT: 'fragment',
 } as const
 
+export const ARRAY_DIFF_OP = {
+  ADD: 'add',
+  REMOVE: 'remove',
+  MOVE: 'move',
+  NOOP: 'noop',
+} as const
+
 
 interface Node {
   domRef?: HTMLElement | Text | null;

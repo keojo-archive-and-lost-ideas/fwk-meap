@@ -9,7 +9,7 @@ describe('createApp', () => {
       state: {},
       view: (state:any, emit:any) => {
         return (
-          createShadowElement('div', { id: 'foo' }, ['bar']),
+          createShadowElement('div', { id: 'foo' }, ['bar'])
         )
       },
       reducers: {}

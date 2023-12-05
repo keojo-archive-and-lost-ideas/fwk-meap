@@ -1,8 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { appendElementNode, appendFragmentNode, appendTextNode } from './append'
 import { createShadowElement, createShadowFragment, createShadowString } from "./shadowNodes";
-//@ts-expect-error
-import { toJSON } from 'dom-to-json'
 import { parseDocument } from "../../libs/parse-document-api";
 
 describe('append text node', () => {
@@ -11,18 +9,12 @@ describe('append text node', () => {
     const body = document.createElement('body')
     const node = appendTextNode({ node: vTextNode, parentElement: body })
 
-    const JSONifiedHTML = toJSON(body)
+    const parseBody = parseDocument(body)
     // nodeType https://developer.mozilla.org/fr/docs/Web/API/Node/nodeType
-    expect(JSONifiedHTML).toEqual({
-      nodeType: 1,
-      tagName: 'body',
-      attributes: [],
-      childNodes: [{
-        nodeType: 3,
-        nodeName: '#text',
-        nodeValue: 'foo',
-        childNodes: []
-      }]
+    expect(parseBody).toEqual({
+      tag: 'body',
+      props: {},
+      children: [ { tag: '', props: {}, children: [], text: 'foo' } ]
     })
   })
 

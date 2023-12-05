@@ -1,27 +1,30 @@
 import { setAttributes } from "./attributes";
 import { addEventListeners } from "./events";
-import { mountDOM } from "./mount-dom";
+import { insert, mountDOM } from "./mount-dom";
 import { DOMAttributes, VirtualElementNode, VirtualFragmentNode, VirtualTextNode } from "./types";
 
-export function appendTextNode({ node, parentElement }: { node: VirtualTextNode, parentElement: HTMLElement }) {
+//text
+export function appendTextNode({ node, parentElement, index }: { node: VirtualTextNode, parentElement: HTMLElement, index?: number }) {
   const { value } = node;
 
   const textNode = document.createTextNode(value)
 
   // create a ref to the dom node
   node.domRef = textNode;
-  parentElement.appendChild(textNode)
+  insert(textNode, parentElement, index)
 }
 
-export function appendFragmentNode({ node, parentElement }: { node: VirtualFragmentNode, parentElement: HTMLElement }) {
+//fragment
+export function appendFragmentNode({ node, parentElement, index }: { node: VirtualFragmentNode, parentElement: HTMLElement, index?: number }) {
   const { children: childrenVirtualDOMS } = node;
 
   node.domRef = parentElement;
 
-  childrenVirtualDOMS.forEach((virtualDOM) => mountDOM({ vdom: virtualDOM, parentElement: parentElement }))
+  childrenVirtualDOMS.forEach((virtualDOM, i) => mountDOM({ vdom: virtualDOM, parentElement: parentElement, index: index ? index + i : null }))
 }
 
-export function appendElementNode({ node, parentElement }: { node: VirtualElementNode, parentElement: HTMLElement }) {
+//element
+export function appendElementNode({ node, parentElement, index }: { node: VirtualElementNode, parentElement: HTMLElement, index?: number }) {
   const { tag, props, children: childrenVirtualDOMS } = node;
 
   const element = document.createElement(tag as string);
@@ -29,7 +32,7 @@ export function appendElementNode({ node, parentElement }: { node: VirtualElemen
   node.domRef = element;
 
   childrenVirtualDOMS.forEach((virtualDOM) => mountDOM({ vdom: virtualDOM, parentElement: element }))
-  parentElement.appendChild(element)
+  insert(element, parentElement, index)
 }
 
 function addPropsToElement({ element, props, vNode }: { element: HTMLElement, props: DOMAttributes | null, vNode: VirtualElementNode }) {

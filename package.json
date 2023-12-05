@@ -11,6 +11,15 @@
   },
   "scripts": {
     "serve": "http-server",
-    "test": "vitest"
+    "dev": "vite",
+    "test": "vitest",
+    "build": "tsc -p ./tsconfig.json",
+    "build:watch": "tsc -p ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.4",
+    "@babel/core": "^7.23.5",
+    "@babel/preset-env": "^7.23.5",
+    "babel-plugin-transform-rename-import": "^2.3.0"
   }
 }

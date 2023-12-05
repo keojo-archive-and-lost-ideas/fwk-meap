@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { mapTextNodes, withoutNulls } from './arrays'
+import { arraysDiff, mapTextNodes, withoutNulls } from './arrays'
 
 
 describe('withoutNulls', () => {
@@ -30,4 +30,41 @@ describe('mapTextNodes', () => {
       }
     ])
   })
+})
+
+describe('arraysDiff', () => {
+  test('same array', () => {
+    const oldArray = [1, 2, 3]
+    const newArray = [1, 2, 3]
+    expect(arraysDiff(oldArray, newArray)).toEqual({
+      added: [],
+      removed: [],
+    })
+  })
+
+  test('delete items', () => {
+    const oldArray = [1, 2, 3]
+    const newArray = [1, 2]
+    expect(arraysDiff(oldArray, newArray)).toEqual({
+      added: [],
+      removed: [3],
+    })
+  })
+
+  test('add items', () => {
+    const oldArray = [1, 2]
+    const newArray = [1, 2, 3]
+    expect(arraysDiff(oldArray, newArray)).toEqual({
+      added: [3],
+      removed: [],
+    })
+  })
+})
+
+describe('ArrayWithOriginalIndices', () => {
+
+})
+
+describe('arraysDiffSequence', () => {
+  
 })
