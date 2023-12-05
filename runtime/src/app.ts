@@ -5,7 +5,6 @@ import { VirtualNode } from './types'
 
 
 export function createApp({ state, view, reducers = {} }: { state: any, view: any, reducers?: any }) {
-  console.log('createApp')
   let parentElement: HTMLElement | null = null
   let vdom: VirtualNode = null
   let isMounted = false
@@ -27,8 +26,12 @@ export function createApp({ state, view, reducers = {} }: { state: any, view: an
   }
 
   function renderApp() {
-    const newDOM = view(state, emit)
-    vdom = patchDOM({oldDOM: vdom, newDOM, parentElement})
+    if(vdom) {
+      destroyDOM({ vdom })
+    }
+
+    vdom = view(state, emit)
+    mountDOM({ vdom, parentElement })
   }
 
   return {
@@ -37,8 +40,7 @@ export function createApp({ state, view, reducers = {} }: { state: any, view: an
         throw new Error('App is already mounted')
       }
       parentElement = _parentElement
-      vdom = view(state, emit)
-      mountDOM({ vdom, parentElement })
+      renderApp()
 
       isMounted = true
     },

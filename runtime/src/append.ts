@@ -11,7 +11,7 @@ export function appendTextNode({ node, parentElement, index }: { node: VirtualTe
 
   // create a ref to the dom node
   node.domRef = textNode;
-  insert(textNode, parentElement, index)
+  parentElement.append(textNode)
 }
 
 //fragment
@@ -20,7 +20,7 @@ export function appendFragmentNode({ node, parentElement, index }: { node: Virtu
 
   node.domRef = parentElement;
 
-  childrenVirtualDOMS.forEach((virtualDOM, i) => mountDOM({ vdom: virtualDOM, parentElement: parentElement, index: index ? index + i : null }))
+  childrenVirtualDOMS.forEach((virtualDOM, i) => mountDOM({ vdom: virtualDOM, parentElement: parentElement }))
 }
 
 //element
@@ -32,7 +32,7 @@ export function appendElementNode({ node, parentElement, index }: { node: Virtua
   node.domRef = element;
 
   childrenVirtualDOMS.forEach((virtualDOM) => mountDOM({ vdom: virtualDOM, parentElement: element }))
-  insert(element, parentElement, index)
+  parentElement.append(element)
 }
 
 function addPropsToElement({ element, props, vNode }: { element: HTMLElement, props: DOMAttributes | null, vNode: VirtualElementNode }) {

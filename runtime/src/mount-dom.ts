@@ -34,13 +34,13 @@ export function mountDOM({vdom, parentElement, index}:{vdom: Vdom, parentElement
   }
   switch (vdom.type) {
     case 'text':
-      appendTextNode({ node: vdom, parentElement, index });
+      appendTextNode({ node: vdom, parentElement });
       break;
     case 'element':
-      appendElementNode({ node: vdom, parentElement, index });
+      appendElementNode({ node: vdom, parentElement });
       break;
     case 'fragment':
-      appendFragmentNode({ node: vdom, parentElement, index });
+      appendFragmentNode({ node: vdom, parentElement });
       break;
     default: {
       throw new Error(`Can't mount DOM of type: ${JSON.stringify(vdom)}`);
