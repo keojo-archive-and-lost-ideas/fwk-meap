@@ -1,7 +1,7 @@
 export interface DOMAttributes {
   class?: string;
   classNames?: string[];
-  style?: string;
+  style?:  Record<string, string>;
   [key: string]: any
 }
 
@@ -31,6 +31,7 @@ interface Node {
 export interface VirtualTextNode extends Node {
   type: 'text'
   value: string;
+  domRef?: Text;
 } 
 
 /*
@@ -46,6 +47,7 @@ export interface VirtualElementNode extends Node {
   props: DOMAttributes | null;
   children: VirtualNode[];
   listeners?: { [key: string]: (event: Event) => void };
+  domRef?: HTMLElement;
 }
 
 /*
@@ -60,6 +62,7 @@ export interface VirtualFragmentNode extends Node {
 
 // Here, I've defined VitrualNode as a type that can be any of the three specific node types, null, or string
 export type VirtualNode = VirtualTextNode | VirtualElementNode | VirtualFragmentNode | null | string | Array<string|null> ;
+export type MontedVirtualNode = VirtualTextNode | VirtualElementNode | VirtualFragmentNode
 
 export type Mutable<Type> = {
   -readonly [Key in keyof Type]: Type[Key];

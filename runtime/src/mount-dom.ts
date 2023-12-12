@@ -24,7 +24,6 @@ export function insert(node:any, parentElement:HTMLElement, index:number) {
 }
 
 export function mountDOM({vdom, parentElement, index}:{vdom: Vdom, parentElement: HTMLElement | null, index?: number}) {
-  console.log('mountDOM', {vdom, parentElement});
   if (vdom === null || parentElement === null) return;
   if(typeof vdom === 'string' || typeof vdom === 'number') {
     vdom = createShadowString(`${vdom}`);

@@ -2,10 +2,10 @@ import { destroyDOM } from './destroy-dom'
 import { mountDOM } from './mount-dom'
 import { Dispatcher } from './dispatcher'
 import { VirtualNode } from './types'
+import { patchDOM } from './patch-dom'
 
 
 export function createApp({ state, view, reducers = {} }: { state: any, view: any, reducers?: any }) {
-  console.log('createApp')
   let parentElement: HTMLElement | null = null
   let vdom: VirtualNode = null
   let isMounted = false
@@ -28,7 +28,7 @@ export function createApp({ state, view, reducers = {} }: { state: any, view: an
 
   function renderApp() {
     const newDOM = view(state, emit)
-    vdom = patchDOM({oldDOM: vdom, newDOM, parentElement})
+    vdom = patchDOM(vdom, newDOM, parentElement)
   }
 
   return {

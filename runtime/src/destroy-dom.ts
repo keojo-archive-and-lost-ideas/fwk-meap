@@ -1,7 +1,7 @@
 import { removeEventListeners } from './events'
-import { DOM_TYPES, Vdom, VirtualElementNode, VirtualFragmentNode, VirtualTextNode } from './types'
+import { DOM_TYPES, MontedVirtualNode, Vdom, VirtualElementNode, VirtualFragmentNode, VirtualTextNode } from './types'
 
-const isMountedDom = (vdom: Vdom): vdom is (VirtualTextNode | VirtualElementNode | VirtualFragmentNode) => {
+export const isMountedDom = (vdom: Vdom): vdom is MontedVirtualNode => {
   if (vdom === null || typeof vdom === "string" || Array.isArray(vdom)) {
     return false
   }
