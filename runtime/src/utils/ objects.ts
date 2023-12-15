@@ -1,5 +1,4 @@
 export function objectsDiff(oldObj = {}, newObj = {}) {
-  console.log('objectsDiff', oldObj, newObj)
   const oldKeys = Object.keys(oldObj)
   const newKeys = Object.keys(newObj)
 

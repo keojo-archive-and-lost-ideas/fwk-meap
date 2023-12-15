@@ -18,9 +18,7 @@ describe('createApp', () => {
     app.mount(body)
 
     const parseBody = parseDocument(body)
-    console.log(parseBody)
     const stringifyBody = JSON.stringify(parseBody)
-    console.log(stringifyBody)
 
     expect(stringifyBody).toEqual(JSON.stringify({
       tag: 'body',

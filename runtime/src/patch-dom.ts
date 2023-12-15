@@ -2,22 +2,26 @@ import { areNodesEqual } from './ nodes-equal'
 import { removeAttribute, removeStyle, setAttribute, setStyle } from './attributes'
 import { destroyDOM, isMountedDom } from './destroy-dom'
 import { mountDOM } from './mount-dom'
-import { ARRAY_DIFF_OP, DOMAttributes, DOM_TYPES, MontedVirtualNode, Vdom, VirtualElementNode, VirtualTextNode } from './types'
+import { ARRAY_DIFF_OP, DOMAttributes, DOM_TYPES, MontedVirtualNode, Vdom, VirtualElementNode, VirtualNode, VirtualTextNode } from './types'
 import { objectsDiff } from './utils/ objects'
 import { arraysDiff, arraysDiffSequence } from './utils/arrays'
 import { isNotBlankOrEmptyString } from './utils/strings'
 import { addEventListener } from './events'
 import { extractChildren } from './shadowNodes'
 
-export function patchDOM(oldVdom:Vdom, newVdom:MontedVirtualNode, parentElement:HTMLElement) {
-  console.log('patchDOM', oldVdom, newVdom, parentElement)
+interface PatchDOMProps {
+  oldVdom: VirtualNode;
+  newVdom: MontedVirtualNode;
+  parentElement: HTMLElement;
+}
+
+export function patchDOM({oldVdom, newVdom, parentElement}: PatchDOMProps) {
 
     if (!isMountedDom(oldVdom)) {
       throw new Error(`Can't patch DOM of type: ${typeof oldVdom}`)
     }
 
     if (!areNodesEqual(oldVdom, newVdom)) {
-      console.log('here', oldVdom)
       const index = findIndexInParent(parentElement, oldVdom.domRef)
 
       destroyDOM({ vdom: oldVdom})
@@ -167,7 +171,6 @@ interface PatchEventsProps {
   newEvents: { [key: string]: (event: Event) => void}
 }
 function patchEvents({element, oldListeners, oldEvents, newEvents}: PatchEventsProps) {
-  console.log('patchEvents', element)
   const { removed, added, updated } = objectsDiff(oldEvents, newEvents) 
 
   for (const eventName of removed.concat(updated)) {
@@ -220,14 +223,14 @@ function patchChildren(oldVdom, newVdom) {
         const elAtTargetIndex = parentElement.childNodes[index] 
 
         parentElement.insertBefore(el, elAtTargetIndex) 
-        patchDOM(oldChild, newChild, parentElement) 
+        patchDOM({oldVdom: oldChild, newVdom: newChild, parentElement}) 
 
         break
       }
 
       case ARRAY_DIFF_OP.NOOP: {
         // TODO: implement
-        patchDOM(oldChildren[originalIndex], newChildren[index], parentElement)
+        patchDOM({oldVdom: oldChildren[originalIndex], newVdom: newChildren[index], parentElement})
         break
       }
     }

@@ -28,7 +28,7 @@ export function createApp({ state, view, reducers = {} }: { state: any, view: an
 
   function renderApp() {
     const newDOM = view(state, emit)
-    vdom = patchDOM(vdom, newDOM, parentElement)
+    vdom = patchDOM({ oldVdom: vdom, newVdom: newDOM, parentElement})
   }
 
   return {

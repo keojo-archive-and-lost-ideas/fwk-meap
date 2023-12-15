@@ -56,7 +56,6 @@ describe('styles', () => {
   test.only('it remove a style from an element', () => {
     const element = document.createElement('div')
     setStyle(element, 'color', 'red')
-    console.log(element.style.color) 
     removeStyle(element, 'color')
 
     expect(element.style.color).toEqual('')

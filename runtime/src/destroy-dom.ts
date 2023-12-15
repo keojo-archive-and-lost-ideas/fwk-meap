@@ -11,7 +11,6 @@ export const isMountedDom = (vdom: Vdom): vdom is MontedVirtualNode => {
 }
 
 export const destroyDOM = ({ vdom }: { vdom: Vdom }) => {
-  console.log('destrttoyDOM', vdom)
   if (!isMountedDom(vdom)) return
 
   const { type } = vdom

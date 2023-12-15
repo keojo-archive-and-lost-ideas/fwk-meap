@@ -24,7 +24,6 @@ describe('append text node', () => {
     appendTextNode({ node: vTextNode, parentElement: body })
 
     const JSONRef = parseDocument(vTextNode.domRef)
-    console.log(JSONRef)
 
     expect(JSONRef).toEqual({ tag: '', props: {}, children: [], text: 'foo' })
   })
