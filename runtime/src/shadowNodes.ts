@@ -8,12 +8,10 @@ export function createShadowString(str:string): VirtualTextNode {
 }
 
 export function createShadowFragment({vNodes}:{vNodes:VirtualNode[]}): VirtualFragmentNode {
-  const c = {
+  return {
     type: DOM_TYPES.FRAGMENT,
     children: mapTextNodes(withoutNulls(vNodes)),
   }
-
-  return c
 }
 
 export function createShadowElement(tag:string|object, props = {}, children: VirtualNode[] = []): VirtualElementNode {
