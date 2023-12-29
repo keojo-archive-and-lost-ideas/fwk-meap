@@ -30,6 +30,9 @@ export function createApp({ state, view, reducers = {} }: { state: any, view: an
       destroyDOM({ vdom })
     }
 
+    console.log('state', state)
+    console.log("view", view.toString())
+    
     vdom = view(state, emit)
     mountDOM({ vdom, parentElement })
   }
