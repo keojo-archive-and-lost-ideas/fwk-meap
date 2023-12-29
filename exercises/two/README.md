@@ -1,0 +1,1 @@
+I really think this exercise can be compared with [this](https://frontendmasters.com/blog/vanilla-javascript-todomvc/) 

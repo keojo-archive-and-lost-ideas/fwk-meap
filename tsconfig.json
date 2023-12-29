@@ -6,6 +6,6 @@
     "moduleResolution": "node",  
     "skipLibCheck": true,
   },
-  "include": ["./runtime/**/*"],
+  "include": ["./runtime/**/*", "additionals-notes/**/*"],
   "exclude": ["./node_modules", "./dist"]
 }
